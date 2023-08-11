@@ -2,9 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-app.get('/', (req,res) => {
-    res.send('Hello World, llinco abc');
-    res.send('Llinco');
+app.get('/hello', (req,res) => {
+    // res.send('Hello World, llinco abc');
+    // res.send('Llinco');
+    res.statusCode = 201
+    res.end('test')
     }
 )
 
