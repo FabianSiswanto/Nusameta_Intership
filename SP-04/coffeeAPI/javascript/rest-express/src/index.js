@@ -58,8 +58,8 @@ app.post(`/post`, async (req, res) => {
 app.put(`/post/:id`, async (req, res) => {
   const { id } = req.params
   const { type, origin, treeHeight, latitude, longitude, altitude, avgTemp, humidity, rainfall, lightIntensity, nutrition, moisture, conductivity, authorEmail } = req.body
-  
-  const updateResult = await prisma.post.update({
+
+  const updatePost = await prisma.post.update({
     where: { id: Number(id) },
     // where: {
     //   id,
@@ -81,10 +81,49 @@ app.put(`/post/:id`, async (req, res) => {
       author: { connect: { email: authorEmail } }
     },
   })
-  res.json(result)
+  res.json(updatePost)
 })
 
-//can disable
+//retrieves the posts
+app.get(`/post/:id`, async (req, res) => {
+  const { id } = req.params
+
+  const post = await prisma.post.findUnique({
+    where: { id: Number(id) },
+  })
+  res.json(post)
+})
+
+//delete a post
+app.delete(`/post/:id`, async (req, res) => {
+  const { id } = req.params
+  const post = await prisma.post.delete({
+    where: {
+      id: Number(id),
+    },
+  })
+  res.json(post)
+})
+
+//see all users or farmers
+app.get('/users', async (req, res) => {
+  const users = await prisma.user.findMany()
+  res.json(users)
+})
+
+//delete user credentials
+app.delete(`/user/:id`, async (req, res) => {
+  const { id } = req.params
+  const deletedUser = await prisma.user.delete({
+    where: {
+      id: Number(id),
+    },
+  })
+  res.json(deletedUser)
+})
+
+/*
+//see number of views, can disable
 app.put('/post/:id/views', async (req, res) => {
   const { id } = req.params
 
@@ -104,7 +143,7 @@ app.put('/post/:id/views', async (req, res) => {
   }
 })
 
-//unsure about this
+//publish a post, not needed
 app.put('/publish/:id', async (req, res) => {
   const { id } = req.params
 
@@ -126,24 +165,8 @@ app.put('/publish/:id', async (req, res) => {
   }
 })
 
-//delete a post
-app.delete(`/post/:id`, async (req, res) => {
-  const { id } = req.params
-  const post = await prisma.post.delete({
-    where: {
-      id: Number(id),
-    },
-  })
-  res.json(post)
-})
 
-//see all users or farmers
-app.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
-  res.json(users)
-})
-
-//see the drafts of the users
+//see the drafts of the users, not needed
 app.get('/user/:id/drafts', async (req, res) => {
   const { id } = req.params
 
@@ -160,15 +183,6 @@ app.get('/user/:id/drafts', async (req, res) => {
   res.json(drafts)
 })
 
-//retrieves the posts -> working
-app.get(`/post/:id`, async (req, res) => {
-  const { id } = req.params
-
-  const post = await prisma.post.findUnique({
-    where: { id: Number(id) },
-  })
-  res.json(post)
-})
 
 //can disable
 app.get('/feed', async (req, res) => {
@@ -226,6 +240,7 @@ app.post('/user/:id/profile', async (req,res) => {
   res.send(profile)
   }
 )
+*/
 
 const server = app.listen(3000, () =>
   console.log(`
