@@ -12,10 +12,10 @@ model User {
   email     String  @unique
   password  String
   name      String?
-  posts     Post[]
+  posts     Coffee[]
 }
 
-model Post {
+model Coffee {
   id             Int      @id @default(autoincrement())
   plantedAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
