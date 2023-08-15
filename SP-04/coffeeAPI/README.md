@@ -1,161 +1,313 @@
-<br />
+# REST API Example
 
-<div align="center">
-  <h1>Prisma Examples</h1>
-  <p><h3 align="center">Ready-to-run Prisma example projects 🚀</h3></p>
-  <a href="https://www.prisma.io/">Website</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.prisma.io/docs/">Docs</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.prisma.io/blog">Blog</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://slack.prisma.io/">Slack</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://twitter.com/prisma">Twitter</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.youtube.com/watch?v=0RhtQgIs-TE&list=PLn2e1F9Rfr6k9PnR_figWOcSHgc_erDr5&index=1">Demo videos</a>
-</div>
+This example shows how to implement a **REST API** using [Express](https://expressjs.com/) and [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client). It uses a SQLite database file with some initial dummy data which you can find at [`./prisma/dev.db`](./prisma/dev.db).
 
-<hr>
+## Getting started
 
-<div align="center">
+### 1. Download example and install dependencies
 
-[![test](https://github.com/prisma/prisma-examples/workflows/test/badge.svg?branch=latest)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Atest+branch%3Alatest)
-[![keep-prisma-dependencies-updated](https://github.com/prisma/prisma-examples/workflows/keep-prisma-dependencies-updated/badge.svg)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Akeep-prisma-dependencies-updated)
-[![keep-dev-branches-in-sync-with-latest](https://github.com/prisma/prisma-examples/workflows/keep-dev-branches-in-sync-with-latest/badge.svg)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Akeep-dev-branches-in-sync-with-latest)
+Download this example:
 
-[View full CI status](#ci-status)
+```
+npx try-prisma@latest --template javascript/rest-express
+```
 
-</div>
+Install npm dependencies:
+```
+cd rest-express
+npm install
+```
 
-<hr>
+<details><summary><strong>Alternative:</strong> Clone the entire repo</summary>
 
-This repository contains a number of ready-to-run example projects demonstrating various use cases of Prisma. Pick an example and follow the instructions in the corresponding README.
+Clone this repository:
 
-You can also find links to [real-world and production ready examples](#real-world--production-ready-example-projects-with-prisma) further below in this README.
+```
+git clone git@github.com:prisma/prisma-examples.git --depth=1
+```
 
-Are you missing an example? Please feel free to [open an issue](https://github.com/prisma/prisma-examples/issues/new) (read the [contribution guidelines](./CONTRIBUTING.md) for more info).
+Install npm dependencies:
 
-<!-- Please keep the absolute URLs so it's easier to copy&paste to prisma/prisma/README.md  -->
+```
+cd prisma-examples/javascript/rest-express
+npm install
+```
 
-## TypeScript
+</details>
 
-### Fullstack
+### 2. Create and seed the database
 
-| Demo                                                                                                                          | Description                                                                                                                                                                                          |
-| :---------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`rest-nextjs-api-routes`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nextjs-api-routes)           | [Next.js](https://nextjs.org/) app with a REST API (using [Next.js API routes](https://nextjs.org/docs/api-routes/introduction))                                                                     |
-| [`rest-nextjs-api-routes-auth`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nextjs-api-routes-auth) | [Next.js](https://nextjs.org/) app with a REST API (using [Next.js API routes](https://nextjs.org/docs/api-routes/introduction)) and authentication (using [NextAuth.js](https://next-auth.js.org/)) |
-| [`rest-nextjs-express`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nextjs-express)                 | [Next.js](https://nextjs.org/) app with a REST API (using [Express](https://expressjs.com/))                                                                                                         |
-| [`rest-nuxtjs`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nuxtjs)                                 | [Nuxt.js](https://nuxt.com/) app with a REST API                                                                                                          |
-| [`graphql-nextjs`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nextjs)                           | [Next.js](https://nextjs.org/) app with a GraphQL API (using [Apollo Server](https://github.com/apollographql/apollo-server) and [GraphQL Nexus](https://github.com/graphql-nexus/nexus))            |
-| [`rest-sveltekit`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-sveltekit)                           | [SvelteKit](https://kit.svelte.dev/) app with a REST API             |
-| [`sveltekit`](https://github.com/prisma/prisma-examples/tree/latest/typescript/sveltekit)                                     | [SvelteKit](https://kit.svelte.dev/) app using SvelteKit's [actions](https://kit.svelte.dev/docs/form-actions) and [load](https://kit.svelte.dev/docs/form-actions#loading-data) functions            |                           | [SvelteKit](https://kit.svelte.dev/) app using SvelteKit's [actions](https://kit.svelte.dev/docs/form-actions) and [load](https://kit.svelte.dev/docs/form-actions#loading-data) functions            |
-| [`trpc-nextjs`](https://github.com/prisma/prisma-examples/tree/latest/typescript/trpc-nextjs)           | [Next.js](https://nextjs.org/) app with [tRPC ](https://trpc.io/)
-| [`remix`](https://github.com/prisma/prisma-examples/tree/latest/typescript/remix)           | [Remix](https://remix.run/) app |
+Run the following command to create your SQLite database file. This also creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./prisma/schema.prisma):
 
-### Backend only
+```
+npx prisma migrate dev --name init
+```
 
-| Demo                                                                                                                      | Description                                                                                                                                                                                       |
-| :------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`graphql-apollo-server`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nexus)                 | GraphQL server based on [`@apollo/server`](https://www.apollographql.com/docs/apollo-server/) and [Nexus Schema](https://github.com/graphql-nexus/schema)                                          |
-| [`graphql-auth`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-auth)                           | GraphQL server with email-password authentication & permissions                                                                                                                                   |
-| [`graphql-sdl-first`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-sdl-first)                 | GraphQL server based on [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server)                                                                                                                 |
-| [`graphql-subscriptions`](https://github.com/prisma/prisma-examples/tree/latest/typescript/subscriptions-pubsub)          | GraphQL server with realtime subscriptions based on [`apollo-server`](https://www.apollographql.com/docs/apollo-server/) and [Nexus Schema](https://github.com/graphql-nexus/schema)              |
-| [`graphql-typegraphql`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-typegraphql)             | GraphQL server based on [`@apollo/server`](https://www.apollographql.com/docs/apollo-server) and [TypeGraphQL](https://github.com/MichalLytek/type-graphql)                                        |
-| [`graphql-typegraphql-crud`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-typegraphql-crud)   | CRUD GraphQL API based on [`@apollo/server`](https://www.apollographql.com/docs/apollo-server) and [TypeGraphQL](https://github.com/MichalLytek/type-graphql)                                      |
-| [`graphql-fastify`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-fastify)                     | GraphQL server based on [Fastify](https://fastify.io/), [Mercurius](https://mercurius.dev/), and the SDL-first approach of [`graphql-tools`](https://www.graphql-tools.com/docs/generate-schema/) |
-| [`graphql-fastify-sdl-first`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-fastify-sdl-first) | GraphQL server based on [Fastify](https://fastify.io/), [Mercurius](https://mercurius.dev/), and the SDL-first approach of [`graphql-tools`](https://www.graphql-tools.com/docs/generate-schema/) |
-| [`graphql-hapi`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-hapi)                           | GraphQL server based on [Hapi](https://hapi.dev/) and [Nexus Schema](https://github.com/graphql-nexus/schema)                                                                                     |
-| [`graphql-hapi-sdl-first`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-hapi-sdl-first)       | GraphQL server based on [Hapi](https://hapi.dev/) and the SDL-first approach of [Apollo Server Integration for Hapi](https://www.npmjs.com/package/@as-integrations/hapi)        |
-| [`graphql-nestjs`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nestjs)                       | GraphQL server based on [NestJS](https://nestjs.com/) (code-first)                                                                                                                                |
-| [`graphql-nestjs-sdl-first`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nestjs-sdl-first)   | GraphQL server based on [NestJS](https://nestjs.com/) and the SDL-first approach of [`graphql-tools`](https://www.apollographql.com/docs/graphql-tools/)                                          |
-| [`graphql`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql)                                     | GraphQL server based on [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server) and [Pothos](https://pothos-graphql.dev/)                                                                       |
-| [`graphql-nexus`](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nexus)                         | GraphQL server based on [`@apollo/server`](https://www.apollographql.com/docs/apollo-server) and [Nexus Schema](https://github.com/graphql-nexus/schema)                                           |
-| [`grpc`](https://github.com/prisma/prisma-examples/tree/latest/typescript/grpc)                                           | gRPC API including runnable client scripts for testing                                                                                                                                            |
-| [`postgis-express`](https://github.com/prisma/prisma-examples/tree/latest/typescript/postgis-express)                     | Demo of spatial queries using [Postgis](http://postgis.net/) and [Express](https://expressjs.com/)                                                                                                |
-| [`rest-express`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-express)                           | REST API with [Express](https://expressjs.com/)                                                                                                                                                   |
-| [`rest-fastify`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-fastify)                           | REST API with [Fastify](https://www.fastify.io/)                                                                                                                                                  |
-| [`rest-koa`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-koa)                                   | REST API with [Koa](https://koajs.com/)                                                                                                                                                           |
-| [`rest-hapi`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-hapi)                                 | REST API with [hapi](https://hapi.dev/)                                                                                                                                                           |
-| [`rest-nestjs`](https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nestjs)                             | REST API with [NestJS](https://docs.nestjs.com/)                                                                                                                                                  |
-| [`script`](https://github.com/prisma/prisma-examples/tree/latest/typescript/script)                                       | Usage of Prisma Client JS in a TypeScript script                                                                                                                                                  |
-| [`testing-express`](https://github.com/prisma/prisma-examples/tree/latest/typescript/testing-express)                     | Demo of integration tests with [Jest](https://jestjs.io/), [Supertest](https://github.com/visionmedia/supertest) and [Express](https://expressjs.com/)                                            |
+When `npx prisma migrate dev` is executed against a newly created database, seeding is also triggered.  The seed file in [`prisma/seed.js`](./prisma/seed.js) will be executed and your database will be populated with the sample data.
 
-## JavaScript (Node.js)
 
-### Fullstack
+### 3. Start the REST API server
 
-| Demo                                                                                          | Description                                                                                                                      |
-| :-------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| [`rest-nextjs`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-nextjs) | [Next.js](https://nextjs.org/) app with a REST API (using [Next.js API routes](https://nextjs.org/docs/api-routes/introduction)) |
-| [`rest-nuxtjs`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-nuxtjs) | [NuxtJS](https://nuxtjs.org/) app with a REST API
-| [`rest-sveltekit`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-sveltekit)                           | [SvelteKit](https://kit.svelte.dev/) app with a REST API                                                                                |
+```
+npm run dev
+```
 
-### Backend only
+The server is now running on `http://localhost:3000`. You can send the API requests implemented in `index.js`, e.g. [`http://localhost:3000/feed`](http://localhost:3000/feed).
 
-| Demo                                                                                                              | Description                                                                                  |
-| :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
-| [`graphql-apollo-server`](https://github.com/prisma/prisma-examples/tree/latest/javascript/graphql-apollo-server) | GraphQL server based on [`@apollo/server`](https://www.apollographql.com/docs/apollo-server/) |
-| [`graphql-auth`](https://github.com/prisma/prisma-examples/tree/latest/javascript/graphql-auth)                   | GraphQL server with email-password authentication & permissions                              |
-| [`graphql-sdl-first`](https://github.com/prisma/prisma-examples/tree/latest/javascript/graphql-sdl-first)         | GraphQL server based on [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server)            |
-| [`grpc`](https://github.com/prisma/prisma-examples/tree/latest/javascript/grpc)                                   | gRPC API including runnable client scripts for testing                                       |
-| [`rest-express`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-express)                   | REST API with [Express](https://expressjs.com/)                                              |
-| [`rest-fastify`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-fastify)                   | REST API with [Fastify](https://www.fastify.io/)                                             |
-| [`rest-koa`](https://github.com/prisma/prisma-examples/tree/latest/javascript/rest-koa)                           | REST API with [Koa](https://koajs.com/)                                                      |
-| [`script`](https://github.com/prisma/prisma-examples/tree/latest/javascript/script)                               | Usage of Prisma Client JS in a Node.js script                                                |
+## Using the REST API
 
-## Deployment platforms
+You can access the REST API of the server using the following endpoints:
 
-The projects in the [`deployment-platforms`](./deployment-platforms) directory show what "Prisma Client"-based deployment setups look like for various deployment providers. Learn more about [deployment](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment) in the Prisma documentation.
+### `GET`
 
-## Real-world & production-ready example projects with Prisma
+- `/post/:id`: Fetch a single post by its `id`
+- `/feed?searchString={searchString}&take={take}&skip={skip}&orderBy={orderBy}`: Fetch all _published_ posts
+  - Query Parameters
+    - `searchString` (optional): This filters posts by `title` or `content`
+    - `take` (optional): This specifies how many objects should be returned in the list
+    - `skip` (optional): This specifies how many of the returned objects in the list should be skipped
+    - `orderBy` (optional): The sort order for posts in either ascending or descending order. The value can either `asc` or `desc`
+- `/user/:id/drafts`: Fetch user's drafts by their `id`
+- `/users`: Fetch all users
+### `POST`
 
-- [Scholarsome](https://scholarsome.com/): An interactive, studying system
-- [Dittofeed](https://www.dittofeed.com): An open-source customer engagement; intuitive marketing tools that scale
-- [Trigger.dev](https://trigger.dev/): Effortless automation built for developers (Zapier alternative)
-- [Webstudio](https://github.com/webstudio-is/webstudio-designer): A NoCode visual design tool for building apps and websites
-- [Dyrector](https://github.com/dyrector-io/dyrectorio): A self-hosted container management platform
-- [reduced.to](https://github.com/origranot/reduced.to): An open-source link shortener
-- [Linen](https://github.com/Linen-dev/linen.dev): An open-source alternative to Slack and Discord with lots of great features
-- [Coolify](https://github.com/coollabsio/coolify): An open-source & self-hostable Heroku / Netlify alternative
-- [dub](https://dub.sh/): An open-source link shortener with built-in analytics and free custom domains
-- [Umami](https://github.com/mikecao/umami): A simple, fast, privacy-focused alternative to Google Analytics
-- [Rallly](https://github.com/lukevella/rallly): A self-hostable doodle poll alternative (based on Next.js, tRPC, and TailwindCSS)
-- [snoopForms](https://github.com/snoopForms/snoopforms?ref=reactjsexample.com): An open-source alternative to Typeform (easy online surveys)
-- [Typebot](https://github.com/baptisteArno/typebot.io): A conversational form builder that you can self-host
-- [Cal.com](https://github.com/calcom/cal.com): An open-source alternative to Calendly (calender-based event scheduling service)
-- [Beam](https://github.com/planetscale/beam): A simple tool that allows members to write posts to share across your organization (based on Next.js)
-- [`ironfish-api`](https://github.com/iron-fish/ironfish-api): Public API for Iron Fish (A novel cryptocurrency focused on privacy and accessibility)
-- [Indie Stack](https://github.com/remix-run/indie-stack): Remix Stack for deploying to Fly with SQLite, authentication, testing, linting, formatting
-- [Blues Stack](https://github.com/remix-run/blues-stack): Remix Stack for deploying to Fly with PostgreSQL, authentication, testing, linting, formatting
-- [Tottem](https://github.com/poulainv/tottem): Fullstack app for "social library management" (based on Next.js)
-- [Dundring](https://github.com/sivertschou/dundring): An in-browser training application created to control and track you training with a smart bike trainer.
-- [Expense.fyi](https://github.com/gokulkrishh/expense.fyi): A tool for tracking and managing expenses.
-- [Letterpad](https://github.com/letterpad/letterpad): A publishing platform for creatives.
-- [Snippy](https://github.com/kingstarfly/snippy): An open-source code-snippet sharing website.
-- [Hitori](https://github.com/astridlol/Hitori): An open-source serverless Discord bot
-<hr>
+- `/post`: Create a new post
+  - Body:
+    - `title: String` (required): The title of the post
+    - `content: String` (optional): The content of the post
+    - `authorEmail: String` (required): The email of the user that creates the post
+- `/signup`: Create a new user
+  - Body:
+    - `email: String` (required): The email address of the user
+    - `name: String` (optional): The name of the user
+    - `postData: PostCreateInput[]` (optional): The posts of the user
 
-## About this repository
+### `PUT`
 
-The `latest` branch of this repository contains the examples with the latest stable version of Prisma CLI and Prisma Client (`@latest` on npm). These dependencies are kept up to date with a GitHub Action workflow, which updates them every time a new version of Prisma is released.
+- `/publish/:id`: Toggle the publish value of a post by its `id`
+- `/post/:id/views`: Increases the `viewCount` of a `Post` by one `id`
 
-There are also the automated branches `dev` and `patch-dev`, which mirror the code from `latest` (synced via a GitHub Action workflow), but they use the respective development channels of Prisma CLI and Prisma Client from npm instead (`@dev` and `@patch-dev`, also updated via a GitHub Action workflow). Thanks to the test coverage of all projects, this can point us to incompatibilities early.
+### `DELETE`
 
-## Security
+- `/post/:id`: Delete a post by its `id`
 
-If you have a security issue to report, please contact us at [security@prisma.io](mailto:security@prisma.io?subject=[GitHub]%20Prisma%202%20Security%20Report%20Examples)
 
-## CI status
+## Evolving the app
 
-| CI Status                                                                                                                                                                                              | Branch      |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| [![test latest](https://github.com/prisma/prisma-examples/workflows/test/badge.svg?branch=latest)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Atest+branch%3Alatest)            | `latest`    |
-| [![test dev](https://github.com/prisma/prisma-examples/workflows/test/badge.svg?branch=dev)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Atest+-branch%3Apatch-dev+branch%3Adev) | `dev`       |
-| [![test patch-dev](https://github.com/prisma/prisma-examples/workflows/test/badge.svg?branch=patch-dev)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Atest+branch%3Apatch-dev)   | `patch-dev` |
+Evolving the application typically requires two steps:
 
-| CI Status                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![keep-prisma-dependencies-updated](https://github.com/prisma/prisma-examples/workflows/keep-prisma-dependencies-updated/badge.svg)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Akeep-prisma-dependencies-updated)                |
-| [![keep-dev-branches-in-sync-with-latest](https://github.com/prisma/prisma-examples/workflows/keep-dev-branches-in-sync-with-latest/badge.svg)](https://github.com/prisma/prisma-examples/actions?query=workflow%3Akeep-dev-branches-in-sync-with-latest) |
+1. Migrate your database using Prisma Migrate
+1. Update your application code
+
+For the following example scenario, assume you want to add a "profile" feature to the app where users can create a profile and write a short bio about themselves.
+
+### 1. Migrate your database using Prisma Migrate
+
+The first step is to add a new table, e.g. called `Profile`, to the database. You can do this by adding a new model to your [Prisma schema file](./prisma/schema.prisma) file and then running a migration afterwards:
+
+```diff
+// ./prisma/schema.prisma
+
+model User {
+  id      Int      @default(autoincrement()) @id
+  name    String?
+  email   String   @unique
+  posts   Post[]
++ profile Profile?
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  viewCount Int      @default(0)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
++model Profile {
++  id     Int     @default(autoincrement()) @id
++  bio    String?
++  user   User    @relation(fields: [userId], references: [id])
++  userId Int     @unique
++}
+```
+
+Once you've updated your data model, you can execute the changes against your database with the following command:
+
+```
+npx prisma migrate dev --name add-profile
+```
+
+This adds another migration to the `prisma/migrations` directory and creates the new `Profile` table in the database.
+
+### 2. Update your application code
+
+You can now use your `PrismaClient` instance to perform operations against the new `Profile` table. Those operations can be used to implement API endpoints in the REST API.
+
+#### 2.1 Add the API endpoint to your app
+
+Update your `index.js` file by adding a new endpoint to your API:
+
+```js
+app.post('/user/:id/profile', async (req, res) => {
+  const { id } = req.params
+  const { bio } = req.body
+
+  const profile = await prisma.profile.create({
+    data: {
+      bio,
+      user: {
+        connect: {
+          id: Number(id)
+        }
+      }
+    }
+  })
+
+  res.send(profile)
+})
+```
+
+#### 2.2 Testing out your new endpoint
+
+Restart your application server and test out your new endpoint.
+
+##### `POST`
+
+- `/user/:id/profile`: Create a new profile based on the user id
+  - Body:
+    - `bio: String` : The bio of the user
+
+
+<details><summary>Expand to view more sample Prisma Client queries on <code>Profile</code></summary>
+
+Here are some more sample Prisma Client queries on the new <code>Profile</code> model:
+
+##### Create a new profile for an existing user
+
+```ts
+const profile = await prisma.profile.create({
+  data: {
+    bio: 'Hello World',
+    user: {
+      connect: { email: 'alice@prisma.io' },
+    },
+  },
+})
+```
+
+##### Create a new user with a new profile
+
+```ts
+const user = await prisma.user.create({
+  data: {
+    email: 'john@prisma.io',
+    name: 'John',
+    profile: {
+      create: {
+        bio: 'Hello World',
+      },
+    },
+  },
+})
+```
+
+##### Update the profile of an existing user
+
+```ts
+const userWithUpdatedProfile = await prisma.user.update({
+  where: { email: 'alice@prisma.io' },
+  data: {
+    profile: {
+      update: {
+        bio: 'Hello Friends',
+      },
+    },
+  },
+})
+```
+
+</details>
+
+## Switch to another database (e.g. PostgreSQL, MySQL, SQL Server, MongoDB)
+
+If you want to try this example with another database than SQLite, you can adjust the the database connection in [`prisma/schema.prisma`](./prisma/schema.prisma) by reconfiguring the `datasource` block. 
+
+Learn more about the different connection configurations in the [docs](https://www.prisma.io/docs/reference/database-reference/connection-urls).
+
+<details><summary>Expand for an overview of example configurations with different databases</summary>
+
+### PostgreSQL
+
+For PostgreSQL, the connection URL has the following structure:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA"
+}
+```
+
+Here is an example connection string with a local PostgreSQL database:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://janedoe:mypassword@localhost:5432/notesapi?schema=public"
+}
+```
+
+### MySQL
+
+For MySQL, the connection URL has the following structure:
+
+```prisma
+datasource db {
+  provider = "mysql"
+  url      = "mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+}
+```
+
+Here is an example connection string with a local MySQL database:
+
+```prisma
+datasource db {
+  provider = "mysql"
+  url      = "mysql://janedoe:mypassword@localhost:3306/notesapi"
+}
+```
+
+### Microsoft SQL Server
+
+Here is an example connection string with a local Microsoft SQL Server database:
+
+```prisma
+datasource db {
+  provider = "sqlserver"
+  url      = "sqlserver://localhost:1433;initial catalog=sample;user=sa;password=mypassword;"
+}
+```
+
+### MongoDB
+
+Here is an example connection string with a local MongoDB database:
+
+```prisma
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb://USERNAME:PASSWORD@HOST/DATABASE?authSource=admin&retryWrites=true&w=majority"
+}
+```
+
+</details>
+
+## Next steps
+
+- Check out the [Prisma docs](https://www.prisma.io/docs)
+- Share your feedback in the [`#product-wishlist`](https://prisma.slack.com/messages/CKQTGR6T0/) channel on the [Prisma Slack](https://slack.prisma.io/)
+- Create issues and ask questions on [GitHub](https://github.com/prisma/prisma/)
+- Watch our biweekly "What's new in Prisma" livestreams on [Youtube](https://www.youtube.com/channel/UCptAHlN1gdwD89tFM3ENb6w)
